@@ -2,6 +2,8 @@ import React from 'react';
 import _ from 'underscore';
 import store from '../store';
 import {Link} from 'react-router';
+import {Glyphicon} from 'react-bootstrap';
+import $ from 'jquery'
 
 var RecipeList = React.createClass({
 	propTypes: {
@@ -41,13 +43,21 @@ var RecipeList = React.createClass({
 
 	handleExpandClick() {
 		$('.recipes').toggleClass('expanded');
-		$('.fa-angle-double-down, .fa-angle-double-up').toggleClass('hidden');
+		$('.glyphicon-chevron-down, .glyphicon-chevron-up').removeClass('spin');
+		setTimeout(() => {
+			$('.glyphicon-chevron-down, .glyphicon-chevron-up').addClass('spin');
+			setTimeout(() => {
+				$('.glyphicon-chevron-down, .glyphicon-chevron-up').toggleClass('hidden')
+			}, 0)
+		}, 0);
+	},
+
+	showSearch() {
+		$('.search-box').toggleClass('show');
 	},
 
 	render() {
 		var recipes = this.props.recipes.toJSON();
-		console.log(recipes);
-		// debugger;
 
 		recipes = recipes.filter((recipe) => {
 			return _.any(_.values(recipe), (value) => { 
@@ -58,18 +68,25 @@ var RecipeList = React.createClass({
     });
 
 		return (
-			<div className="recipe-list">
-				<input className='search-box' type="text" onKeyUp={this.handleChange} placeholder='Search recipes or ingredients'/>
-				<ul className='recipes'>
-					{_.map(recipes, (object) => {
-						return (
-							<Link to={'/recipe/' + object.objectId}><li key={object.objectId} className='recipe'>{object.name}</li></Link>
-						)
-					})}
-				</ul>
-				<i className="fa fa-search" onClick={this.handleSearchClick}></i>
-				<i className="fa fa-angle-double-down" onClick={this.handleExpandClick}></i>
-				<i className="fa fa-angle-double-up hidden" onClick={this.handleExpandClick}></i>
+			<div className="recipe-list-container">
+				<div className="recipe-list">
+					<div className="search-container">
+						<input className='search-box' type="text" onKeyUp={this.handleChange} placeholder='Search recipes or ingredients'/>
+						<Glyphicon glyph='search' onClick={this.showSearch}/>
+					</div>
+					<ul className='recipes'>
+						{_.map(recipes, (object) => {
+							return (
+								<Link to={'/recipe/' + object.objectId} className='recipe-link'>
+									<li key={object.objectId} className='recipe'>{object.name}</li>
+								</Link>
+							)
+						})}
+					</ul>
+					<Glyphicon glyph='chevron-down' onClick={this.handleExpandClick}/>
+					<Glyphicon glyph='chevron-up hidden' onClick={this.handleExpandClick}/>
+
+				</div>
 			</div>
 		)
 	}

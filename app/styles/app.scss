@@ -1,28 +1,166 @@
 @import 'bourbon';
 @import 'neat';
-@import 'foundation';
+// @import '~foundation-sites/scss/foundation';
+@import '../../node_modules/bootstrap/dist/css/bootstrap.css';
 
-$background: #333;
+$background: #eee;
 
-.body {
+@include keyframes(spin) {
+	from {
+		@include transform(rotate(180deg))
+	}
+	to {
+		@include transform(rotate(0deg))
+	}
+}
+
+body {
 	background: $background;
 }
 
+//---------------Nav Bar--------------//
+.top-bar {
+	height: 45px;
+	background: black;
+}
+
+.title-area {
+	list-style: none;
+}
+
+.name {
+	h1 {
+		margin: 0;
+		vertical-align: middle;
+		color: white;
+	}
+}
+
 //---------------Index----------------//
-.recipes {
+.recipe-list-container {
+	background: white;
+}
+.recipe-list {
+	@include clearfix();
 	@include outer-container();
+	position: relative;
+
+}
+
+.search-container {
+	@include span-columns(12);
+	height: 50px;
+}
+
+.search-box {
+	@include span-columns(11.5);
+	@include shift(.5);
+	display: block;
+	max-width: 0;
+	padding: 0;
+	border: none;
+	overflow: hidden;
+	&.show {
+		max-width: 100%;
+		border: 1px solid black;
+		padding: 8px;
+		transition: max-width 0.5s ease-in-out;
+	}
+}
+
+.glyphicon-search {
+	position: absolute;
+	left: 10px;
+	top: 10px;
+	font-size: 2rem;
+	cursor: pointer;
+}
+
+.recipes {
+	@include span-columns(12);
+	display: block;
 	text-align: center;
+	max-height: 70px;
+	padding-bottom: 5px;
+	overflow: hidden;
+	transition: all 0.5s ease-in-out;
+	&.expanded {
+		max-height: 200px;
+		transition: all 0.5s ease-in-out;
+	}
+}
+
+.recipe-link {
+	@include span-columns(3);
+	background: white;
+	list-style: none;
+	box-shadow: -3px 3px	5px black;
+	border: 1px solid black;
+	color: black;
+	margin-bottom: 30px;
+	&:nth-child(4n) {
+		@include omega();
+	}
 }
 
 .recipe {
-	@include span-columns(2);
-	
-	background: white;
-	display: inline-block;
-	float: left;
-	list-style: none;
-	margin: 0 10px;
-	box-shadow: 3px 3px	5px black;
-	border: 1px solid black;
-	color: black;
+	height: 50px;
+	font-size: 1.8rem;
 }
+
+.glyphicon-chevron-down,
+.glyphicon-chevron-up {
+	position: absolute;
+	top: 100%;
+	left: 49%;
+	opacity: 1;
+	color: grey;
+	&.spin {
+		animation: spin 0.5s 1 linear;
+	}
+	&.hidden {
+		opacity: 0;
+	}
+}
+
+//------------------Recipe-Info-----------------//
+.recipe-container {
+	@include outer-container();
+}
+
+.recipe-detail {
+	@include span-columns(9);
+	@include shift(1.5);
+}
+
+.serving-label {
+	margin: 0 10px;
+}
+
+.servings {
+	width: 40px;
+	margin-right: 20px;
+}
+
+.ingredients {
+	list-style: none;
+	margin-top: 20px;
+}
+
+.ingredient {
+	float: left;
+	width: 200px;
+	font-size: 1.6rem;
+	> * {
+		float: left;
+		display: inline-block;
+	}
+	input {
+		width: 10%;
+	}
+	p {
+		width: 90%;
+	}
+}
+
+

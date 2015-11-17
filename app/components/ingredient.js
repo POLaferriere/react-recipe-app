@@ -9,7 +9,7 @@ var Ingredient = React.createClass({
 
 	render() {
 		return (
-			<li>
+			<li className='ingredient'>
 				<input type='checkbox'/>
 				<p>{this.props.qty + ' ' + this.props.unit + ' ' + this.props.name}</p>
 				

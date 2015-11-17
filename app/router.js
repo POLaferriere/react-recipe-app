@@ -9,7 +9,6 @@ import RecipeDetail from './components/recipe-detail';
 ReactDOM.render((
 	<Router>
 		<Route path='/' component={App}>
-			<IndexRoute component={Index}/>
 			<Route path='/recipe/:id' component={RecipeDetail} />
 		</Route>
 	</Router>

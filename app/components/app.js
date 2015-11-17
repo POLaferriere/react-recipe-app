@@ -1,5 +1,6 @@
 import React from 'react';
 import { IndexLink } from 'react-router';
+import RecipeList from './index'
 
 var App = React.createClass({
   propTypes: {
@@ -12,10 +13,11 @@ var App = React.createClass({
         <nav className="top-bar" data-topbar role="navigation">
           <ul className="title-area">
             <li className="name">
-              <h1><IndexLink to="/">Home</IndexLink></h1>
+              <h1>Home</h1>
             </li>
           </ul>
         </nav>
+        <RecipeList />
 
         {this.props.children}
       </div>

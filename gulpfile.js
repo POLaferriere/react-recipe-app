@@ -6,6 +6,7 @@ var gutil             = require('gulp-util');
 var path              = require('path');
 var webpack           = require('webpack');
 var HtmlPlugin        = require('html-webpack-plugin');
+var ExtractTextPlugin = require('extract-text-webpack-plugin');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 var WebpackDevServer  = require('webpack-dev-server');
 
@@ -13,12 +14,20 @@ var param             = require('jquery-param');
 
 var scssIncludePaths = {
   includePaths: [
-    './node_modules/foundation-sites/scss/',
     './node_modules/bourbon/app/assets/stylesheets/',
     './node_modules/bourbon-neat/app/assets/stylesheets/',
   ]
 };
 var scssIncludeParams = decodeURIComponent(param(scssIncludePaths));
+
+var cssIncludePaths = {
+  includePaths: [
+    './node_modules/bootstrap/dist/css/',
+    './node_modules/react-widgets/dist/css',
+  ]
+};
+
+var cssIncludeParams = decodeURIComponent(param(cssIncludePaths));
 
 var webpackConfig = {
   context: path.resolve(__dirname, 'app'),
@@ -37,7 +46,7 @@ var webpackConfig = {
     new HtmlPlugin({
       template: 'app/index.html',
       inject: false
-    })
+    }),
   ],
 
   resolve: {
@@ -47,7 +56,7 @@ var webpackConfig = {
 
   module: {
     loaders: [
-      {
+     {
         test: /\.jsx?$/,
         loaders: ['react-hot', 'babel'],
         include: path.resolve(__dirname, 'app')
@@ -55,8 +64,33 @@ var webpackConfig = {
       {
         test: /\.scss$/,
         loader: "style-loader!css-loader!sass-loader?outputStyle=expanded&" + scssIncludeParams,
-        include: path.resolve(__dirname, 'app', 'styles')
-      }
+      },
+      // {
+      //   test: /\.css$/,
+      //   loader: "style-loader!css-loader?outputStyle=expanded&" + cssIncludeParams,
+      //   include: path.resolve(__dirname, 'app', 'styles')
+      // },
+      {
+        test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/, 
+        loader: "url-loader?limit=10000&mimetype=application/font-woff" 
+      },
+      { 
+        test: /\.(ttf|eot|svg)(\?v=[0-9].[0-9].[0-9])?$/,
+        loader: "file-loader?name=[name].[ext]"
+      },
+      { 
+        test: /\.gif$/,
+        loader: "url-loader?mimetype=image/png" 
+      },
+      {
+        test: /\.png$/,
+        loader: "url-loader?mimetype=image/png" 
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        loader: 'url?name=images/[name].[ext]&limit=8192',
+        include: path.resolve(__dirname, 'public', 'assets', 'images')
+      },
     ]
   }
 };
